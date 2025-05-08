@@ -13,30 +13,46 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <!-- 🔁 Replace with your own image file -->
-
-        <!-- 🎯 Add your .glb model file -->
-        <a-asset-item id="avatarModel" src="./iron_man_suit.glb"></a-asset-item>
+        <!-- 🎥 Add your video -->
+        <video
+          id="markerVideo"
+          src="./VID-20250508-WA0020.mp4"
+          preload="auto"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+          loop
+        ></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- <a-plane
-          src="#card"
+        <!-- 🖼️ Show video on a plane that fits the marker -->
+        <a-video
+          src="#markerVideo"
           position="0 0 0"
-          height="0.552"
           width="1"
+          height="0.552"
           rotation="0 0 0"
-        ></a-plane> -->
-        <a-gltf-model
-          src="#avatarModel"
-          position="0 0 0.2"
-          scale="1 1 1"
-          rotation="90 0 360"
-          animation="property: rotation; to: -90 0 0; loop: true; dur: 8000; easing: linear"
-        ></a-gltf-model>
+          autoplay="false"
+          loop="true"
+        ></a-video>
       </a-entity>
     </a-scene>
+
+    <script>
+      // Start video playback only when marker is found
+      const sceneEl = document.querySelector("a-scene");
+      const videoEl = document.querySelector("#markerVideo");
+
+      sceneEl.addEventListener("targetFound", (event) => {
+        videoEl.play();
+      });
+
+      sceneEl.addEventListener("targetLost", (event) => {
+        videoEl.pause();
+      });
+    </script>
   </body>
 </html>
